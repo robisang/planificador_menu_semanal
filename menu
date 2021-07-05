@@ -1,0 +1,56 @@
+import pandas as pd
+import random
+
+#Traigo el archivo de excel como data frame
+
+archivo = "archivo.xlsx" #Poner la ubicación completa #El file original es una lista de comidas separadas por categoria. 
+df = pd.read_excel(archivo, sheet_name = "x") 
+
+#Lo convierto en listas
+indice_listas = df.index.tolist()
+carnes = df["Carnes"].tolist()
+acompañamientos= df["Acompañamientos"].tolist()
+pastas= df["Pastas"].tolist()
+tartas= df["Tartas"].tolist()
+platos = df["Platos completos"].tolist()
+sopas = df["Sopas"].tolist()
+
+#Limpio los nan
+carnes = [x for x in carnes if str(x) != 'nan']
+acompañamientos = [x for x in acompañamientos if str(x) != 'nan']
+pastas = [x for x in pastas if str(x) != 'nan']
+tartas = [x for x in tartas if str(x) != 'nan']
+platos = [x for x in platos if str(x) != 'nan']
+sopas = [x for x in sopas if str(x) != 'nan']
+
+#Armo las funcion de platos aleatorios
+
+carne_e = random.sample(carnes, 6)
+acomp_e = random.sample (acompañamientos,6)
+pastas_e = random.sample(pastas, 4)
+platos_e = random.sample (platos, 3)
+
+#Armo el menú de la semana:
+
+menu = pd.DataFrame() #Creo el df
+
+menu["Almuerzo"] = None #Creo las columnas
+menu["Cena"] = None
+
+menu.loc['Lunes'] = [carne_e[0] + " con " + acomp_e[0], pastas_e[0]]  #Creo las filas por su nombre de fila
+menu.loc['Martes'] = [random.choice(tartas),carne_e[1] + " con " + acomp_e[1]]
+menu.loc['Miercoles'] = [pastas_e[1], random.choice(sopas)]
+menu.loc['Jueves'] = [carne_e[2] + " con " + acomp_e[2],platos_e[0]]
+menu.loc['Viernes'] = [pastas_e[2],carne_e[3] + " con " + acomp_e[3]]
+menu.loc['Sabado'] = [platos_e[1],carne_e[4] + " con " + acomp_e[4]]
+menu.loc['Domingo'] = [carne_e[5] + " con " + acomp_e[5],pastas_e[3]]
+
+menu.to_excel(r"nombre_del_nuevo_archivo", index = "F")
+
+
+
+
+
+
+df.describe()
+
